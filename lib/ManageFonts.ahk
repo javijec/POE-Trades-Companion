@@ -11,10 +11,27 @@ Load_Or_Unload_Fonts(whatDo) {
 	global PROGRAM
 	static hCollection
 	fontsFolder := PROGRAM.FONTS_FOLDER
+	qq := """"
+
+	rawLine =
+	(
+		Load_Or_Unload_Fonts(whatDo)
+	)
+	OutputDebug,% "[" A_Hour ":" A_Sec "] - Entered Function"
+		. "`nRaw: " rawLine
+		. "`nCode: Load_Or_Unload_Fonts(" whatDo ")`n`n"
 
 	if (whatDo = "LOAD") {
 		PROGRAM["FONTS"] := {}
-		DllCall("gdiplus\GdipNewPrivateFontCollection", "uint*", hCollection)
+		returnVal := DllCall("gdiplus\GdipNewPrivateFontCollection", "uint*", hCollection)
+		rawLine = 
+		(
+			DllCall("gdiplus\GdipNewPrivateFontCollection", "uint*", hCollection)
+		)
+		OutputDebug,% "[" A_Hour ":" A_Sec "] - Executing Code"
+		. "`nRaw: " rawLine
+		. "`nCode: DllCall(" qq "gdiplus\GdipNewPrivateFontCollection" qq ", " qq "uint*" qq ", " hCollection ")"
+		. "`nReturned: " returnVal "`n`n"
 	}
 
 	Loop, Files, %fontsFolder%\*.ttf
@@ -22,6 +39,15 @@ Load_Or_Unload_Fonts(whatDo) {
 		fontFile := A_LoopFileFullPath, fontTitle := FGP_Value(A_LoopFileFullPath, 21)	; 21 = Title
 		if ( whatDo="LOAD") {
 			hFamily := Gdip_PrivateFontFamilyCreate(hCollection, fontFile, fontTitle)
+			rawLine = 
+			(
+				hFamily := Gdip_PrivateFontFamilyCreate(hCollection, fontFile, fontTitle)
+			)
+			OutputDebug,% "[" A_Hour ":" A_Sec "] - Executing Code"
+			. "`nRaw: " rawLine
+			. "`nCode: Gdip_PrivateFontFamilyCreate(" hCollection ", " fontFile ", " fontTitle ")"
+			. "`nReturned: " hFamily "`n`n"
+
 			if (hFamily) {
 				PROGRAM.FONTS[fontTitle] := hFamily
 				AppendToLogs(A_ThisFunc "(): Loaded font file """ A_LoopFileName """ with title """ fontTitle """ inside family """ hFamily """.")
@@ -37,8 +63,8 @@ Load_Or_Unload_Fonts(whatDo) {
 		}
 	}
 
-	if (whatDo = "UNLOAD")
-		PROGRAM["FONTS"] := {}
+	; if (whatDo = "UNLOAD")
+		; PROGRAM["FONTS"] := {}
 
 	; SendMessage, 0x1D,,,, ahk_id 0xFFFF
 	PostMessage, 0x1D,,,, ahk_id 0xFFFF
