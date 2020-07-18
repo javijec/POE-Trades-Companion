@@ -13,6 +13,22 @@ Load_Or_Unload_Fonts(whatDo) {
 	fontsFolder := PROGRAM.FONTS_FOLDER
 	qq := """"
 
+	os3264bits := A_Is64bitOS?"x64":"x86"
+	appendToFile := "OS Informations: " qq A_OSType A_Space . A_OSVersion A_Space . os3264bits qq
+	. "`n"			"OS Res-DPI: " qq . Get_DpiFactor() . qq
+	. "`n"
+	. "`n"			"AHK Version: " qq A_AhkVersion qq
+	. "`n"			"Is Unicode: " qq A_IsUnicode qq
+	. "`n"			"Is Compiled: " qq . (A_IsCompiled ? 1 : 0) . qq
+	. "`n"			"Pointer Size: " qq A_PtrSize qq
+	. "`n"
+	. "`n"			"Program version: " qq PROGRAM.VERSION qq
+	. "`n"			"Main folder: " qq PROGRAM.MAIN_FOLDER qq
+	. "`n"			"Program path: " qq A_ScriptFullPath qq
+	OutputDebug,% "[" A_Hour ":" A_Sec "]"
+		. "`n" appendToFile "`n`n"
+
+		
 	rawLine =
 	(
 		Load_Or_Unload_Fonts(whatDo)
