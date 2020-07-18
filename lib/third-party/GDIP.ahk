@@ -44,6 +44,7 @@ Gdip_PrivateFontFamilyCreate(ByRef hCollection, fontFile, fontTitle="") {
 		. "`nCode: Gdip_PrivateFontFamilyCreate(" hCollection ", " fontFile ", " fontTitle ")`n`n"
 	if (!hCollection) {
 		returnVal := DllCall("gdiplus\GdipNewPrivateFontCollection", "uint*", hCollection)
+		ErrorLvl := ErrorLevel, LastError := A_LastError
 		rawLine = 
 		(
 			returnVal := DllCall("gdiplus\GdipNewPrivateFontCollection", "uint*", hCollection)
@@ -51,10 +52,13 @@ Gdip_PrivateFontFamilyCreate(ByRef hCollection, fontFile, fontTitle="") {
 		OutputDebug,% "[" A_Hour ":" A_Sec "] - Executing Code"
 		. "`nRaw: " rawLine
 		. "`nCode: DllCall(" qq "gdiplus\GdipNewPrivateFontCollection" qq ", " qq "uint*" qq ", " hCollection ")"
-		. "`nReturned: " returnVal "`n`n"
+		. "`nReturned: " returnVal
+		. "`nErrorLevel: " ErrorLvl
+		. "`nA_LastError: " LastError  "`n`n"
 	}
 	if (!fontTitle) {
 		fontTitle := FGP_Value(fontFile, 21) ; 21 = Title
+		ErrorLvl := ErrorLevel, LastError := A_LastError
 		rawLine =
 		(
 			fontTitle := FGP_Value(fontFile, 21)
@@ -62,7 +66,9 @@ Gdip_PrivateFontFamilyCreate(ByRef hCollection, fontFile, fontTitle="") {
 		OutputDebug,% "[" A_Hour ":" A_Sec "] - Executing Code"
 		. "`nRaw: " rawLine
 		. "`nCode: FGP_Value(" fontFile ", 21)"
-		. "`nReturned: " fontTitle "`n`n"
+		. "`nReturned: " fontTitle
+		. "`nErrorLevel: " ErrorLvl
+		. "`nA_LastError: " LastError  "`n`n"
 	}
 
 	rawLine =
@@ -70,10 +76,13 @@ Gdip_PrivateFontFamilyCreate(ByRef hCollection, fontFile, fontTitle="") {
 		returnVal := DllCall("gdi32\AddFontResourceEx", "Str", fontFile, "UInt", FR_PRIVATE:=0x10, "UInt", 0)
 	)
 	returnVal := DllCall("gdi32\AddFontResourceEx", "Str", fontFile, "UInt", FR_PRIVATE:=0x10, "UInt", 0)
+	ErrorLvl := ErrorLevel, LastError := A_LastError
 	OutputDebug,% "[" A_Hour ":" A_Sec "] - Executing Code"
 		. "`nRaw: " rawLine
 		. "`nCode: DllCall(" qq "gdi32\AddFontResourceEx" qq ", " qq "Str" qq ", " fontFile ", " qq "UInt" qq ", FR_PRIVATE:=0x10, " qq "UInt" qq ", 0)"
-		. "`nReturned: " returnVal "`n`n"
+		. "`nReturned: " returnVal
+		. "`nErrorLevel: " ErrorLvl
+		. "`nA_LastError: " LastError  "`n`n"
 
 	if (!A_IsUnicode) {
 		rawLine =
@@ -81,90 +90,117 @@ Gdip_PrivateFontFamilyCreate(ByRef hCollection, fontFile, fontTitle="") {
 			nSize := DllCall("kernel32\MultiByteToWideChar", "Uint", 0, "Uint", 0, "Uint", &fontFile, "int", -1, "Uint", 0, "int", 0)
 		)		
 		nSize := DllCall("kernel32\MultiByteToWideChar", "Uint", 0, "Uint", 0, "Uint", &fontFile, "int", -1, "Uint", 0, "int", 0)
+		ErrorLvl := ErrorLevel, LastError := A_LastError
 		OutputDebug,% "[" A_Hour ":" A_Sec "] - Executing Code"
 		. "`nRaw: " rawLine
 		. "`nCode: DllCall(" qq "kernel32\MultiByteToWideChar" qq ", " qq "Uint" qq ", 0, " qq "Uint" qq ", 0, " qq "Uint" qq ", " &fontFile ", " qq "int" qq ", -1, " qq "Uint" qq ", 0, " qq "int" qq ", 0)"
-		. "`nReturned: " returnVal "`n`n"
+		. "`nReturned: " nSize
+		. "`nErrorLevel: " ErrorLvl
+		. "`nA_LastError: " LastError  "`n`n"
 
 		rawLine =
 		(
 			returnVal := VarSetCapacity(wFontfile, nSize * 2 + 1)
 		)
 		returnVal := VarSetCapacity(wFontfile, nSize * 2 + 1)
+		ErrorLvl := ErrorLevel, LastError := A_LastError
 		OutputDebug,% "[" A_Hour ":" A_Sec "] - Executing Code"
 		. "`nRaw: " rawLine
 		. "`nCode: VarSetCapacity(" wFontfile ", " nSize * 2 + 1 ")"
-		. "`nReturned: " returnVal "`n`n"
+		. "`nReturned: " returnVal
+		. "`nErrorLevel: " ErrorLvl
+		. "`nA_LastError: " LastError  "`n`n"
 
 		rawLine =
 		(
 			DllCall("kernel32\MultiByteToWideChar", "Uint", 0, "Uint", 0, "Uint", &fontFile, "int", -1, "Uint", &wFontfile, "int", nSize + 1)
 		)
 		returnVal := DllCall("kernel32\MultiByteToWideChar", "Uint", 0, "Uint", 0, "Uint", &fontFile, "int", -1, "Uint", &wFontfile, "int", nSize + 1)
+		ErrorLvl := ErrorLevel, LastError := A_LastError
 		OutputDebug,% "[" A_Hour ":" A_Sec "] - Executing Code"
 		. "`nRaw: " rawLine
 		. "`nCode: DllCall(" qq "kernel32\MultiByteToWideChar" qq ", " qq "Uint" qq ", 0, " qq "Uint" qq ", 0, " qq "Uint" qq ", " &fontFile ", " qq "int" qq ", -1, " qq "Uint" qq ", " &wFontfile ", " qq "int" qq ", " nSize + 1 ")"
-		. "`nReturned: " returnVal "`n`n"
+		. "`nReturned: " returnVal
+		. "`nErrorLevel: " ErrorLvl
+		. "`nA_LastError: " LastError  "`n`n"
 
 		rawLine =
 		(
 			nSize := DllCall("kernel32\MultiByteToWideChar", "Uint", 0, "Uint", 0, "Uint", &fontTitle, "int", -1, "Uint", 0, "int", 0)
 		)		
 		nSize := DllCall("kernel32\MultiByteToWideChar", "Uint", 0, "Uint", 0, "Uint", &fontTitle, "int", -1, "Uint", 0, "int", 0)
+		ErrorLvl := ErrorLevel, LastError := A_LastError
 		OutputDebug,% "[" A_Hour ":" A_Sec "] - Executing Code"
 		. "`nRaw: " rawLine
 		. "`nCode: nSize := DllCall(" qq "kernel32\MultiByteToWideChar" qq ", " qq "Uint" qq ", 0, " qq "Uint" qq ", 0, " qq "Uint" qq ", " &fontTitle ", " qq "int" qq ", -1, " qq "Uint" qq ", 0, " qq "int" qq ", 0)"
-		. "`nReturned: " nSize "`n`n"
+		. "`nReturned: " nSize
+		. "`nErrorLevel: " ErrorLvl
+		. "`nA_LastError: " LastError  "`n`n"
 		
 		rawLine =
 		(
 			VarSetCapacity(wFontTitle, nSize * 2 + 1)
 		)				
 		returnVal := VarSetCapacity(wFontTitle, nSize * 2 + 1)
+		ErrorLvl := ErrorLevel, LastError := A_LastError
 		OutputDebug,% "[" A_Hour ":" A_Sec "] - Executing Code"
 		. "`nRaw: " rawLine
 		. "`nCode: VarSetCapacity(" wFontTitle ", " nSize * 2 + 1 ")"
-		. "`nReturned: " returnVal "`n`n"
+		. "`nReturned: " returnVal
+		. "`nErrorLevel: " ErrorLvl
+		. "`nA_LastError: " LastError  "`n`n"
 
 		rawLine =
 		(
 			DllCall("kernel32\MultiByteToWideChar", "Uint", 0, "Uint", 0, "Uint", &fontTitle, "int", -1, "Uint", &wFontTitle, "int", nSize + 1)
 		)		
 		returnVal := DllCall("kernel32\MultiByteToWideChar", "Uint", 0, "Uint", 0, "Uint", &fontTitle, "int", -1, "Uint", &wFontTitle, "int", nSize + 1)
+		ErrorLvl := ErrorLevel, LastError := A_LastError
 		OutputDebug,% "[" A_Hour ":" A_Sec "] - Executing Code"
 		. "`nRaw: " rawLine
 		. "`nCode: DllCall(" qq "kernel32\MultiByteToWideChar" qq ", " qq "Uint" qq ", 0, " qq "Uint" qq ", 0, " qq "Uint" qq ", " &fontTitle ", " qq "int" qq ", -1, " qq "Uint" qq ", " &wFontTitle ", " qq "int" qq ", " nSize + 1 ")"
-		. "`nReturned: " returnVal "`n`n"
+		. "`nReturned: " returnVal
+		. "`nErrorLevel: " ErrorLvl
+		. "`nA_LastError: " LastError  "`n`n"
 
 		rawLine =
 		(
 			DllCall("gdiplus\GdipNewPrivateFontCollection", "uint*", hCollection)
 		)
 		returnVal := DllCall("gdiplus\GdipNewPrivateFontCollection", "uint*", hCollection)
+		ErrorLvl := ErrorLevel, LastError := A_LastError
 		OutputDebug,% "[" A_Hour ":" A_Sec "] - Executing Code"
 		. "`nRaw: " rawLine
 		. "`nCode: DllCall(" qq "gdiplus\GdipNewPrivateFontCollection" qq ", " qq "uint*" qq ", " hCollection ")"
-		. "`nReturned: " returnVal "`n`n"
+		. "`nReturned: " returnVal
+		. "`nErrorLevel: " ErrorLvl
+		. "`nA_LastError: " LastError  "`n`n"
 
 		rawLine =
 		(
 			DllCall("gdiplus\GdipPrivateAddFontFile", "uint", hCollection, "uint", &wFontfile)
 		)
 		returnVal := DllCall("gdiplus\GdipPrivateAddFontFile", "uint", hCollection, "uint", &wFontfile)
+		ErrorLvl := ErrorLevel, LastError := A_LastError
 		OutputDebug,% "[" A_Hour ":" A_Sec "] - Executing Code"
 		. "`nRaw: " rawLine
 		. "`nCode: DllCall(" qq "gdiplus\GdipPrivateAddFontFile" qq ", " qq "uint" qq ", " hCollection ", " qq "uint" qq ", " &wFontfile ")"
-		. "`nReturned: " returnVal "`n`n"
+		. "`nReturned: " returnVal
+		. "`nErrorLevel: " ErrorLvl
+		. "`nA_LastError: " LastError  "`n`n"
 
 		rawLine =
 		(
 			DllCall("gdiplus\GdipCreateFontFamilyFromName", "uint", &wFontTitle, "uint", hCollection, "uint*", hFamily)
 		)
 		returnVal := DllCall("gdiplus\GdipCreateFontFamilyFromName", "uint", &wFontTitle, "uint", hCollection, "uint*", hFamily)
+		ErrorLvl := ErrorLevel, LastError := A_LastError
 		OutputDebug,% "[" A_Hour ":" A_Sec "] - Executing Code"
 		. "`nRaw: " rawLine
 		. "`nCode: DllCall(" qq "gdiplus\GdipCreateFontFamilyFromName" qq ", " qq "uint" qq ", " &wFontTitle ", " qq "uint" qq ", " hCollection ", " qq "uint*" qq ", " hFamily ")"
-		. "`nReturned: " returnVal "`n`n"
+		. "`nReturned: " returnVal
+		. "`nErrorLevel: " ErrorLvl
+		. "`nA_LastError: " LastError  "`n`n"
 
 	}
 	else {
@@ -173,20 +209,26 @@ Gdip_PrivateFontFamilyCreate(ByRef hCollection, fontFile, fontTitle="") {
 			DllCall("gdiplus\GdipPrivateAddFontFile", "uint", hCollection, "uint", &fontFile)
 		)
 		returnVal := DllCall("gdiplus\GdipPrivateAddFontFile", "uint", hCollection, "uint", &fontFile)
+		ErrorLvl := ErrorLevel, LastError := A_LastError
 		OutputDebug,% "[" A_Hour ":" A_Sec "] - Executing Code"
 		. "`nRaw: " rawLine
 		. "`nCode: DllCall(" qq "gdiplus\GdipPrivateAddFontFile" qq ", " qq "uint" qq ", " hCollection ", " qq "uint" qq ", " &fontFile ")"
-		. "`nReturned: " returnVal "`n`n"
+		. "`nReturned: " returnVal
+		. "`nErrorLevel: " ErrorLvl
+		. "`nA_LastError: " LastError  "`n`n"
 
 		rawLine = 
 		(
 			DllCall("gdiplus\GdipCreateFontFamilyFromName", "uint", &fontTitle, "uint", hCollection, "uint*", hFamily)
 		)
 		returnVal := DllCall("gdiplus\GdipCreateFontFamilyFromName", "uint", &fontTitle, "uint", hCollection, "uint*", hFamily)
+		ErrorLvl := ErrorLevel, LastError := A_LastError
 		OutputDebug,% "[" A_Hour ":" A_Sec "] - Executing Code"
 		. "`nRaw: " rawLine
 		. "`nCode: DllCall(" qq "gdiplus\GdipCreateFontFamilyFromName" qq ", " qq "uint" qq ", " &fontTitle ", " qq "uint" qq ", " hCollection ", " qq "uint*" qq ", " hFamily ")"
-		. "`nReturned: " returnVal "`n`n"
+		. "`nReturned: " returnVal
+		. "`nErrorLevel: " ErrorLvl
+		. "`nA_LastError: " LastError  "`n`n"
 	}
 
 	return hFamily
