@@ -85,8 +85,8 @@ Load_Or_Unload_Fonts(whatDo) {
 		}
 	}
 
-	; if (whatDo = "UNLOAD")
-		; PROGRAM["FONTS"] := {}
+	if (whatDo = "UNLOAD")
+		PROGRAM["FONTS"] := {}
 
 	; SendMessage, 0x1D,,,, ahk_id 0xFFFF
 	PostMessage, 0x1D,,,, ahk_id 0xFFFF
